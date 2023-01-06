@@ -59,10 +59,10 @@ namespace MyVet.Domain.Services
 
             var _Claims = new[] {
                 new Claim(JwtRegisteredClaimNames.Jti, Guid.NewGuid().ToString()),
-                new Claim(TypeClaims.IdUser,userEntity.IdUser.ToString()),
-                new Claim(TypeClaims.UserName,userEntity.FullName),
-                new Claim(TypeClaims.Email,userEntity.Email),
-                new Claim(TypeClaims.IdRol,string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
+                new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
+                new Claim(TypeClaims.UserName, userEntity.FullName),
+                new Claim(TypeClaims.Email, userEntity.Email),
+                new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
             };
 
             var _payload = new JwtPayload(
@@ -98,7 +98,7 @@ namespace MyVet.Domain.Services
         //        Name = x.Name,
         //        LastName = x.LastName,
         //        Email = x.Email,
-        //        //Rol
+        //        //Rol ????
 
         //    }).ToList();
 
@@ -108,8 +108,10 @@ namespace MyVet.Domain.Services
         {
             var user = _unitOfWork.RolUserRepository.GetAll(x => x.UserEntity);
 
+            // Hacer la relacion con RolUser para sacar el idRol, que no sale de sacarlo directamente de userEntity
             List<ConsultUserDto> users = user.Select(x => new ConsultUserDto
             {
+                Id = x.Id,
                 Name = x.UserEntity.Name,
                 LastName = x.UserEntity.LastName,
                 Email = x.UserEntity.Email,
@@ -136,11 +138,19 @@ namespace MyVet.Domain.Services
             return await _unitOfWork.Save() > 0;
         }
 
-        public async Task<bool> DeleteUser(int idUser)
+        public async Task<ResponseDto> DeleteUser(int idUser)
         {
+            ResponseDto response = new ResponseDto();
+
             _unitOfWork.UserRepository.Delete(idUser);
 
-            return await _unitOfWork.Save() > 0;
+            response.IsSuccess = await _unitOfWork.Save() > 0;
+            if (response.IsSuccess)
+                response.Message = "Usuario Eliminado";
+            else
+                response.Message = "Hubo un error al eliminar el Usuario, por favor vuelva a intentalo";
+
+            return response;
         }
 
         public async Task<ResponseDto> CreateUser(UserEntity data)
@@ -168,7 +178,7 @@ namespace MyVet.Domain.Services
                     result.Message = "Email ya se encuestra registrado, utilizar otro!";
             }
             else
-                result.Message = "Usuarioc con Email Inválido";
+                result.Message = "Usuario con Email Inválido";
 
             return result;
         }
@@ -199,10 +209,10 @@ namespace MyVet.Domain.Services
                     result.IsSuccess = await _unitOfWork.Save() > 0;
                 }
                 else
-                    result.Message = "Email ya se encuestra registrado, utilizar otro!";
+                    result.Message = "Email ya se encuestra registrado, utiliza otro!";
             }
             else
-                result.Message = "Usuarioc con Email Inválido";
+                result.Message = "Usuario con Email Inválido";
 
             return result;
         }

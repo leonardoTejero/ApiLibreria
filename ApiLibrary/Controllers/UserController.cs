@@ -1,5 +1,6 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
+using Common.Utils.Resorces;
 using Infraestructure.Entity.Model;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
@@ -8,6 +9,7 @@ using MyLibrary.Domain.Dto.User;
 using MyVet.Domain.Dto;
 using MyVet.Domain.Services.Interface;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace ApiLibreriaNeoris.Controllers
 {
@@ -51,5 +53,31 @@ namespace ApiLibreriaNeoris.Controllers
             };
             return Ok(response);
         }
+
+        /// <summary>
+        /// Eliminar un usuario por Id
+        /// </summary>
+        /// <param name="idUser"></param>
+        /// <returns></returns>
+        /// <response code="200">OK! </response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="500">Oops! Can't process your request now</response>
+        [HttpDelete]
+        [Route("DeleteUser")]
+        [CustomPermissionFilter(Enums.Permission.EliminarUsuarios)]
+        public async Task<IActionResult> DeleteUser(int idUser)
+        {
+            IActionResult result;
+
+            ResponseDto response = await _userServices.DeleteUser(idUser);
+            if(response.IsSuccess)
+                result = Ok(response);
+            else
+                result = BadRequest(response);
+
+            return result;
+        }
+
+
     }
 }

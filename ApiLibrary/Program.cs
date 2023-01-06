@@ -17,6 +17,7 @@ namespace ApiLibrary
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
+            // Crear data semilla
             RunSeeding(host);
             host.Run();
         }

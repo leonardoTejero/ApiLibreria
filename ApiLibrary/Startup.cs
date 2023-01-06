@@ -39,7 +39,7 @@ namespace ApiLibrary
             #region Context SQL Server
             services.AddDbContext<DataContext>(options =>
             {
-                options.UseSqlServer(this.Configuration.GetConnectionString("ConnectionStringSQLServer"));
+                options.UseSqlServer(Configuration.GetConnectionString("ConnectionStringSQLServer"));
 
             });
             #endregion
@@ -53,6 +53,10 @@ namespace ApiLibrary
             JwtConfigurationHandler.ConfigureJwtAuthentication(services, tokenAppSetting);
 
             #endregion Jwt Configuration
+
+            // Ignorar la referencia ciclica, necesario nuget de newtonsoft
+            ////services.AddControllers().AddNewtonsoftJson(x =>
+            //x.SerializerSettings.ReferenceLoopHandling = Newtonsoft.Json.ReferenceLoopHandling.Ignore);
 
             services.AddControllers();
         }

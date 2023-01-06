@@ -1,10 +1,6 @@
-﻿using Infraestructure.Entity.Model.Library;
-using Infraestructure.Entity.Model.Master;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
 
 namespace Infraestructure.Entity.Model.Library
 {

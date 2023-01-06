@@ -1,11 +1,7 @@
 ﻿using Infraestructure.Entity.Model;
 using Infraestructure.Entity.Model.Library;
 using Infraestructure.Entity.Model.Master;
-using Infraestructure.Entity.Model.Library;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Text;
 
 namespace Infraestructure.Core.Data
 {
@@ -32,13 +28,15 @@ namespace Infraestructure.Core.Data
         public DbSet<AuthorBookEntity> AuthorBookEntity { get; set; }
         public DbSet<EditorialEntity> EditorialEntity { get; set; }
 
-        // El email es campo unico
+        
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
+            // Establecer el email como campo unico
             modelBuilder.Entity<UserEntity>()
                .HasIndex(b => b.Email)
                .IsUnique();
 
+            // Evitar que a estas entidades se les asigne un id automatico, porque se lo establecemos en la data semilla con los enums
             modelBuilder.Entity<TypeStateEntity>().Property(t => t.IdTypeState).ValueGeneratedNever();
             modelBuilder.Entity<TypePermissionEntity>().Property(t => t.IdTypePermission).ValueGeneratedNever();
             modelBuilder.Entity<StateEntity>().Property(t => t.IdState).ValueGeneratedNever();

@@ -1,9 +1,7 @@
-﻿using Infraestructure.Entity.Model.Library;
-using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using System.Text;
+
 
 namespace Infraestructure.Entity.Model.Library
 {
@@ -18,6 +16,7 @@ namespace Infraestructure.Entity.Model.Library
         [MaxLength(100)]
         public string Campus { get; set; }
 
+        //Una editorial puede tener muchos libros (IEnumerable)
         public IEnumerable<BookEntity> BookEntities { get; set; }
     }
 }

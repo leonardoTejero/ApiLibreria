@@ -1,7 +1,9 @@
 ﻿using ApiLibrary.Handlers;
+using Common.Utils.Resorces;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyVet.Domain.Dto;
+using MyVet.Domain.Services;
 using MyVet.Domain.Services.Interface;
 using System.Threading.Tasks;
 using Vet.Handlers;
@@ -61,6 +63,38 @@ namespace Vet.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Registro primera vez
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// /// <response code="200">Success</response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="401">User unauthorized</response>
+        /// <response code="500">Oops! </response>
+        [HttpPost]
+        [Route("Register")]
+        public async Task<IActionResult> Register(UserDto user)
+        {
+            IActionResult response;
+
+            var result = await _userServices.Register(user);
+
+            ResponseDto responseDto = new ResponseDto()
+            {
+                IsSuccess = result.IsSuccess,
+                Result = result.Result,
+                Message = result.IsSuccess  ? GeneralMessages.ItemInserted : result.Message//GeneralMessages.ItemNoInserted
+            };
+
+            if (result.IsSuccess)
+                response = Ok(responseDto);
+            else
+                response = BadRequest(responseDto);
+
+            return response;
+        }
         #endregion
+        
     }
 }

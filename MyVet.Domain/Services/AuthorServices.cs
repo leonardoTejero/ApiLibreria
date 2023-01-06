@@ -27,7 +27,7 @@ namespace MyLibrary.Domain.Services
         #region Methods
         public List<AuthorDto> GetAllAuthors()
         {
-            var author = _unitOfWork.AuthorRepository.GetAll(x => x.UserEntity);
+            var author = _unitOfWork.AuthorRepository.GetAll(); //x => x.UserEntity
 
             List<AuthorDto> listAuthors = author.Select(x => new AuthorDto
             {

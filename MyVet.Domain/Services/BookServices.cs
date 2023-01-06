@@ -1,4 +1,5 @@
 ﻿using Common.Utils.Enums;
+using Common.Utils.Resorces;
 using Infraestructure.Core.UnitOfWork.Interface;
 using Infraestructure.Entity.Model.Library;
 using MyLibrary.Domain.Dto;
@@ -81,9 +82,9 @@ namespace MyLibrary.Domain.Services
             response.IsSuccess = await _unitOfWork.Save() > 0;
 
             if (response.IsSuccess)
-                response.Message = "Se elminnó correctamente el libro";
+                response.Message = GeneralMessages.ItemDeleted; //"Se elminó correctamente el libro";
             else
-                response.Message = "Hubo un error al eliminar el libro, por favor vuelva a intentalo";
+                response.Message = GeneralMessages.ItemNoDeleted; //"Hubo un error al eliminar el libro, por favor vuelva a intentalo";
 
             return response;
         }

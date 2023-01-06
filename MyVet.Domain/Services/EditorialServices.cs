@@ -30,13 +30,14 @@ namespace MyLibrary.Domain.Services
 
         public List<EditorialDto> GetAllEditorial()
         {
-            var editorial = _unitOfWork.EditorialRepository.GetAll().ToList();
+            var editorial = _unitOfWork.EditorialRepository.GetAll(x => x.BookEntities);  //x => x.BookEntities
 
             List<EditorialDto> list = editorial.Select(x => new EditorialDto
             {
                 Id = x.Id,
                 Name = x.Name,
                 Campus = x.Campus,
+                Books = x.BookEntities.ToList().Select(x => x.Name),
 
             }).ToList();
 

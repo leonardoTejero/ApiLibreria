@@ -41,7 +41,7 @@ namespace Common.Utils.Helpers
         /// <param name="authorization"> Request.Headers["Authorization"] </param>
         /// <param name="claim"></param>
         /// <returns></returns>
-        public static string GetClaimValue(string token, string claim)
+        public static string GetClaimValue(string token, string claim) // Claim = id usuario, roles...
         {
             JwtSecurityTokenHandler handler = new JwtSecurityTokenHandler();
 

@@ -15,16 +15,11 @@ namespace MyVet.Domain.Services.Interface
 
         #region Methods Crud
         List<ConsultUserDto> GetAllUsers();
-
         UserEntity GetUser(int idUser);
-
         Task<bool> UpdateUser(UserEntity user);
-
-
-        Task<bool> DeleteUser(int idUser);
+        Task<ResponseDto> DeleteUser(int idUser);
         Task<ResponseDto> CreateUser(UserEntity user);
 
-        
         #endregion
     }
 }
