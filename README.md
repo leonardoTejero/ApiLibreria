@@ -1,5 +1,9 @@
 # ApiLibreriaNeoris
-Api de Libreria, Crud de autores, editorial, libros
+Api de Libreria, Crud de autores, editorial, libros, visualizacion de usuarios
+Autenticacion por token, seguridad de los endpoints si no esta autorizado.
+Documentacion con Swagger
+Conexion con sql server
+
 
 Ya existe dos usuarios creados por data semilla y tienen asignados los roles y permisos
 
