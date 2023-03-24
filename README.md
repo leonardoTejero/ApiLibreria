@@ -1,12 +1,18 @@
 # ApiLibreriaNeoris
-Api de Libreria, Crud de autores, editorial, libros, visualizacion de usuarios.
-Autenticacion por token Jwt.
-Seguridad de los endpoints por authorizacion y nivel de los roles.
-Documentacion con Swagger
-Conexion con sql server
+-Api de Libreria, Crud de autores, editorial, libros, visualizacion de usuarios.
 
-Arquitectura Hexagonal
-Patrón de diseño Repository
+-Autenticacion por token Jwt.
+
+-Seguridad de los endpoints por authorizacion y nivel de los roles.
+
+-Documentacion con Swagger
+
+-Conexion con sql server
+
+-Arquitectura Hexagonal
+
+-Patrón de diseño Repository
+
 
 
 Ya existe dos usuarios creados por data semilla y tienen asignados los roles y permisos
