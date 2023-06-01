@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace MyVet.Domain.Dto
+namespace MyLibrary.Domain.Dto
 {
     public class UserDto : LoginDto
     {

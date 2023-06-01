@@ -1,15 +1,11 @@
-﻿using Common.Utils.Enums;
-using Common.Utils.Resorces;
+﻿using Common.Utils.Resources;
 using Infraestructure.Core.UnitOfWork.Interface;
 using Infraestructure.Entity.Model.Library;
 using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Book;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyLibrary.Domain.Services
@@ -53,13 +49,45 @@ namespace MyLibrary.Domain.Services
             return listBooks;
         }
 
+        public ResponseDto GetOneBook(int idBook)
+        {
+            ResponseDto response = new ResponseDto();
+
+            var book = _unitOfWork.AuthorBookRepository.FirstOrDefault(x => x.IdBook == idBook, p => p.BookEntity,
+                                                                             p => p.BookEntity.EditorialEntity, p => p.AuthorEntity);
+
+            if (book == null)
+            {
+                response.Message = "Libro no encontrado";
+                response.IsSuccess = false;
+                return response;
+            }
+
+            ConsultBookDto bookDto = new ConsultBookDto
+            {
+                Id = book.BookEntity.IdBook,
+                Name = book.BookEntity.Name,
+                Synopsis = book.BookEntity.Synopsis,
+                NumberPages = book.BookEntity.NumberPages,
+                IdEditorial = book.BookEntity.IdEditorial,
+                Editorial = book.BookEntity.EditorialEntity.Name,
+                IdAuthor = book.AuthorEntity.IdAuthor,
+                IdAuthorBook = book.Id,
+                Author = book.AuthorEntity.Name,
+            };
+            response.Result = bookDto;
+            response.IsSuccess = true;
+
+            return response;
+        }
+
         //Insertar un libro y la tabla intermedia AutoresLibros
         public async Task<bool> InsertBookAsync(InsertBookDto book)
         {
             AuthorBookEntity authorBookEntity = new AuthorBookEntity()
             {
                 IdAuthor = book.IdAuthor,
-                BookEntity  = new BookEntity()
+                BookEntity = new BookEntity()
                 {
                     Name = book.Name,
                     Synopsis = book.Synopsis,
@@ -76,7 +104,7 @@ namespace MyLibrary.Domain.Services
         public async Task<ResponseDto> DeleteBookAsync(int idBook)
         {
             ResponseDto response = new ResponseDto();
-
+            // TODO Validar que exista primero
             _unitOfWork.BookRepository.Delete(idBook);
 
             response.IsSuccess = await _unitOfWork.Save() > 0;

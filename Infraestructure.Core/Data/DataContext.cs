@@ -12,13 +12,13 @@ namespace Infraestructure.Core.Data
 
         }
 
+        //Establecer la tablas que se van a crear en la migracion, (puede tener otro nombre)
         public DbSet<UserEntity> UserEntity { get; set; }
         public DbSet<RolEntity> RolEntity { get; set; }
         public DbSet<RolUserEntity> RolUserEntity { get; set; }
         public DbSet<PermissionEntity> PermissionEntity { get; set; }
         public DbSet<RolPermissionEntity> RolPermissionEntity { get; set; }
         public DbSet<TypePermissionEntity> TypePermissionEntity { get; set; }
-
         public DbSet<StateEntity> StateEntity { get; set; }
         public DbSet<TypeStateEntity> TypeStateEntity { get; set; }
 
@@ -28,7 +28,8 @@ namespace Infraestructure.Core.Data
         public DbSet<AuthorBookEntity> AuthorBookEntity { get; set; }
         public DbSet<EditorialEntity> EditorialEntity { get; set; }
 
-        
+
+        //Crear las configuaciones
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             // Establecer el email como campo unico

@@ -1,14 +1,11 @@
-﻿using MyVet.Domain.Dto;
-using System;
-using System.Collections.Generic;
-using System.Text;
-
-namespace MyLibrary.Domain.Dto.User
+﻿namespace MyLibrary.Domain.Dto.User
 {
-    public class ConsultUserDto : UserDto
+    public class ConsultUserDto
     {
         public int Id { get; set; }
         public string Email { get; set; }
         public int IdRol { get; set; }
+        public string Name { get; set; }
+        public string LastName { get; set; }
     }
 }

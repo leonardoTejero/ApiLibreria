@@ -1,13 +1,13 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
 using Common.Utils.Helpers;
-using Common.Utils.Resorces;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Author;
+using MyLibrary.Domain.Services;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
 using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
@@ -26,6 +26,7 @@ namespace ApiLibreriaNeoris.Controllers
         #endregion
 
         #region Builder
+        // Obtener objeto inyectado
         public AuthorController(IAuthorServices authorServices)
         {
             _authorServices = authorServices;
@@ -55,6 +56,28 @@ namespace ApiLibreriaNeoris.Controllers
             };
             return Ok(response);
         }
+
+        /// <summary>
+        /// Obtener un autor por id
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">OK! </response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="500">Oops! Can't process your request now</response>
+
+        // Enrutamiento como segmento de ruta author/GetOneAuthor/2
+        // [HttpGet("GetOneAuthor/{id}")]
+
+        [HttpGet]
+        [Route("GetOneAuthor")]
+        [CustomPermissionFilter(Enums.Permission.ConsultarAutor)]
+        public IActionResult GetOneAuthor(int id)
+        {
+            ResponseDto result = _authorServices.GetOneAuthor(id);
+
+            return Ok(result);
+        }
+
 
         /// <summary>
         /// Crear un nuevo autor
@@ -142,7 +165,7 @@ namespace ApiLibreriaNeoris.Controllers
                 response = BadRequest(result);
 
             return response;
-        } 
+        }
         #endregion
     }
 }

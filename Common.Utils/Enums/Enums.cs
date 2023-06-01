@@ -8,7 +8,6 @@ namespace Common.Utils.Enums
     {
         public enum TypeState
         {
-            //Usuario
             EstadoUsuario = 1,
             EstadoLibro = 2,
         }

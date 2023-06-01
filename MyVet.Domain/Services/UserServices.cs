@@ -1,24 +1,24 @@
-﻿using Infraestructure.Core.UnitOfWork.Interface;
-using Infraestructure.Entity.Model;
-using MyVet.Domain.Dto;
-using MyVet.Domain.Services.Interface;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using Common.Utils.Exceptions;
 using Common.Utils.Helpers;
-using static Common.Utils.Enums.Enums;
+using Common.Utils.Resources;
+using Infraestructure.Core.UnitOfWork.Interface;
+using Infraestructure.Entity.Model;
 using Microsoft.Extensions.Configuration;
 using Microsoft.IdentityModel.Tokens;
-using System.IdentityModel.Tokens.Jwt;
-using System.Security.Claims;
-using static Common.Utils.Constant.Const;
-using Common.Utils.Exceptions;
-using Common.Utils.Resorces;
+using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.User;
+using MyLibrary.Domain.Services.Interface;
+using System;
+using System.Collections.Generic;
+using System.IdentityModel.Tokens.Jwt;
+using System.Linq;
+using System.Security.Claims;
+using System.Text;
+using System.Threading.Tasks;
+using static Common.Utils.Constant.Const;
+using static Common.Utils.Enums.Enums;
 
-namespace MyVet.Domain.Services
+namespace MyLibrary.Domain.Services
 {
     public class UserServices : IUserServices
     {
@@ -40,8 +40,8 @@ namespace MyVet.Domain.Services
         public TokenDto Login(LoginDto login)
         {
             UserEntity user = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == login.UserName
-                                                                            && x.Password == login.Password,
-                                                                           r => r.RolUserEntities);
+                                                                        && x.Password == login.Password,
+                                                                        r => r.RolUserEntities);
             if (user == null)
                 throw new BusinessException(GeneralMessages.BadCredentials);
 
@@ -49,10 +49,12 @@ namespace MyVet.Domain.Services
             return GenerateTokenJWT(user);
         }
 
-        public TokenDto GenerateTokenJWT(UserEntity userEntity)
+        private TokenDto GenerateTokenJWT(UserEntity userEntity)
         {
+            //Obtener la clave de cifrado el token, guardada en appSettings
             IConfigurationSection tokenAppSetting = _configuration.GetSection("Tokens");
 
+            //Crear el encabezado del token
             var _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(tokenAppSetting.GetSection("Key").Value));
             var _signingCredentials = new SigningCredentials(_symmetricSecurityKey, SecurityAlgorithms.HmacSha256);
             var _header = new JwtHeader(_signingCredentials);
@@ -62,12 +64,12 @@ namespace MyVet.Domain.Services
                 new Claim(TypeClaims.IdUser, userEntity.IdUser.ToString()),
                 new Claim(TypeClaims.UserName, userEntity.FullName),
                 new Claim(TypeClaims.Email, userEntity.Email),
-                new Claim(TypeClaims.IdRol, string.Join(",",userEntity.RolUserEntities.Select(x=>x.IdRol))),
+                new Claim(TypeClaims.IdRol, string.Join(",", userEntity.RolUserEntities.Select(x=>x.IdRol))),
             };
 
             var _payload = new JwtPayload(
-                    issuer: tokenAppSetting.GetSection("Issuer").Value,
-                    audience: tokenAppSetting.GetSection("Audience").Value,
+                    issuer: tokenAppSetting.GetSection("Issuer").Value, // puede ser null
+                    audience: tokenAppSetting.GetSection("Audience").Value, // null  
                     claims: _Claims,
                     notBefore: DateTime.UtcNow, //hora internacional
                     expires: DateTime.UtcNow.AddMinutes(60) //minutos que expira la sesion
@@ -83,12 +85,49 @@ namespace MyVet.Domain.Services
                 Token = new JwtSecurityTokenHandler().WriteToken(_token),
                 Expiration = Utils.ConvertToUnixTimestamp(_token.ValidTo),
             };
+
             return token;
+        }
+
+        public async Task<ResponseDto> Register(UserDto data)
+        {
+            ResponseDto result = new ResponseDto();
+
+            if (Utils.ValidateEmail(data.UserName))
+            {
+                if (_unitOfWork.UserRepository.FirstOrDefault(x => x.Email == data.UserName) == null)
+                {
+
+                    RolUserEntity rolUser = new RolUserEntity()
+                    {
+                        IdRol = RolUser.Estandar.GetHashCode(),
+                        UserEntity = new UserEntity()
+                        {
+                            Email = data.UserName,
+                            LastName = data.LastName,
+                            Name = data.Name,
+                            Password = data.Password
+                        }
+                    };
+
+                    _unitOfWork.RolUserRepository.Insert(rolUser);
+                    result.IsSuccess = await _unitOfWork.Save() > 0;
+
+                    // retornar un token si fue exitoso
+                }
+                else
+                    result.Message = "Email ya se encuestra registrado, utiliza otro!";
+            }
+            else
+                result.Message = "Usuario con Email Inválido";
+
+            return result;
         }
 
         #endregion
 
-        #region Methods 
+        #region Methods Crud
+
         //public List<ConsultUserDto> GetAllUsers()
         //{
         //    var user = _unitOfWork.UserRepository.GetAll();
@@ -108,7 +147,7 @@ namespace MyVet.Domain.Services
         {
             var user = _unitOfWork.RolUserRepository.GetAll(x => x.UserEntity);
 
-            // Hacer la relacion con RolUser para sacar el idRol, que no sale de sacarlo directamente de userEntity
+            // Hacer la relacion con RolUser para sacar el idRol, que no sale directamente de userEntity
             List<ConsultUserDto> users = user.Select(x => new ConsultUserDto
             {
                 Id = x.Id,
@@ -183,39 +222,6 @@ namespace MyVet.Domain.Services
             return result;
         }
 
-
-        public async Task<ResponseDto> Register(UserDto data)
-        {
-            ResponseDto result = new ResponseDto();
-
-            if (Utils.ValidateEmail(data.UserName))
-            {
-                if (_unitOfWork.UserRepository.FirstOrDefault(x => x.Email == data.UserName) == null)
-                {
-
-                    RolUserEntity rolUser = new RolUserEntity()
-                    {
-                        IdRol = RolUser.Estandar.GetHashCode(),
-                        UserEntity = new UserEntity()
-                        {
-                            Email = data.UserName,
-                            LastName = data.LastName,
-                            Name = data.Name,
-                            Password = data.Password
-                        }
-                    };
-
-                    _unitOfWork.RolUserRepository.Insert(rolUser);
-                    result.IsSuccess = await _unitOfWork.Save() > 0;
-                }
-                else
-                    result.Message = "Email ya se encuestra registrado, utiliza otro!";
-            }
-            else
-                result.Message = "Usuario con Email Inválido";
-
-            return result;
-        }
         #endregion
 
     }

@@ -1,13 +1,9 @@
 ﻿using Common.Utils.Enums;
 using Infraestructure.Core.UnitOfWork.Interface;
-using Infraestructure.Entity.Model;
-using MyVet.Domain.Services.Interface;
-using System;
-using System.Collections.Generic;
+using MyLibrary.Domain.Services.Interface;
 using System.Linq;
-using System.Text;
 
-namespace MyVet.Domain.Services
+namespace MyLibrary.Domain.Services
 {
     public class PermissionServices : IPermissionServices
     {

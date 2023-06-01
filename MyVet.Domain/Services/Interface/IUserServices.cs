@@ -1,10 +1,10 @@
 ﻿using Infraestructure.Entity.Model;
+using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.User;
-using MyVet.Domain.Dto;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
-namespace MyVet.Domain.Services.Interface
+namespace MyLibrary.Domain.Services.Interface
 {
     public interface IUserServices
     {

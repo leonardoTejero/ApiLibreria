@@ -1,10 +1,10 @@
 ﻿using Infraestructure.Core.UnitOfWork.Interface;
 using Infraestructure.Entity.Model;
-using MyVet.Domain.Services.Interface;
+using MyLibrary.Domain.Services.Interface;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace MyVet.Domain.Services
+namespace MyLibrary.Domain.Services
 {
     public class RolServices : IRolServices
     {

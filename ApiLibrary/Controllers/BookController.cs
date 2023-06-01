@@ -1,18 +1,13 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
-using Common.Utils.Helpers;
-using Common.Utils.Resorces;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Book;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Common.Utils.Constant.Const;
 
 namespace ApiLibrary.Controllers
 {
@@ -58,6 +53,29 @@ namespace ApiLibrary.Controllers
             return Ok(response);
         }
 
+        /// <summary>
+        /// Obtener un libro por id
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">OK! </response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="500">Oops! Can't process your request now</response>
+        [HttpGet]
+        [Route("GetOneBook")]
+        [CustomPermissionFilter(Enums.Permission.ConsultarLibros)]
+        public IActionResult GetOneBook(int idBook)
+        {
+
+            ResponseDto result = _bookServices.GetOneBook(idBook);
+
+            //ResponseDto response = new ResponseDto()
+            //{
+            //    IsSuccess = true,
+            //    Result = result,
+            //    Message = result.Message
+            //};
+            return Ok(result);
+        }
 
         /// <summary>
         /// Crear un nuevo libro

@@ -6,12 +6,10 @@ using Infraestructure.Core.UnitOfWork.Interface;
 using Microsoft.Extensions.DependencyInjection;
 using MyLibrary.Domain.Services;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Services;
-using MyVet.Domain.Services.Interface;
 
 namespace ApiLibrary.Handlers
 {
-    public static class DependencyInyectionHandler
+    public static class DependencyInjectionHandler
     {
         public static void DependencyInyectionConfig(IServiceCollection services)
         {

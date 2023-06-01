@@ -1,0 +1,12 @@
+{
+  "profiles": {
+    "MyLibrary.Domain": {
+      "commandName": "Project",
+      "launchBrowser": true,
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      },
+      "applicationUrl": "https://localhost:60528;http://localhost:60532"
+    }
+  }
+}

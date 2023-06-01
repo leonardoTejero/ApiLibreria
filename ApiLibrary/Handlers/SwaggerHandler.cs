@@ -5,7 +5,7 @@ using System;
 using System.IO;
 using System.Reflection;
 
-namespace Vet.Handlers
+namespace ApiLibreriaNeoris.Handlers
 {
     public static class SwaggerHandler
     {
@@ -17,7 +17,7 @@ namespace Vet.Handlers
                 c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = "Api Libreria Neoris",
+                    Title = "Api Libreria",
                     Description = "Api de Libreria",
                     Contact = new OpenApiContact
                     {

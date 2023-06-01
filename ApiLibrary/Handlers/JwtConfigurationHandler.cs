@@ -5,7 +5,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
 
-namespace Vet.Handlers
+namespace ApiLibreriaNeoris.Handlers
 {
     public static class JwtConfigurationHandler
     {

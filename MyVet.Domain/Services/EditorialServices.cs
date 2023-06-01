@@ -1,14 +1,10 @@
 ﻿using Infraestructure.Core.UnitOfWork.Interface;
 using Infraestructure.Entity.Model.Library;
-using Infraestructure.Entity.Model.Library;
 using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Editorial;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyLibrary.Domain.Services

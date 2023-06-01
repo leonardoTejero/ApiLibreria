@@ -13,7 +13,7 @@ namespace Infraestructure.Entity.Model.Library
         [MaxLength(100)]
         public string Name { get; set; }
 
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string Synopsis { get; set; }
         public int NumberPages { get; set; }
 

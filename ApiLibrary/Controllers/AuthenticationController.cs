@@ -1,14 +1,12 @@
 ﻿using ApiLibrary.Handlers;
-using Common.Utils.Resorces;
-using Microsoft.AspNetCore.Http;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Mvc;
-using MyVet.Domain.Dto;
-using MyVet.Domain.Services;
-using MyVet.Domain.Services.Interface;
+using MyLibrary.Domain.Dto;
+using MyLibrary.Domain.Services.Interface;
+using System;
 using System.Threading.Tasks;
-using Vet.Handlers;
 
-namespace Vet.Controllers
+namespace ApiLibreriaNeoris.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
@@ -16,7 +14,7 @@ namespace Vet.Controllers
     public class AuthenticationController : ControllerBase
     {
         #region Attributes
-        private readonly IUserServices _userServices; 
+        private readonly IUserServices _userServices;
         #endregion
 
         #region Builder
@@ -34,7 +32,7 @@ namespace Vet.Controllers
         /// <remarks>
         /// Sample request:
         ///
-        ///     POST /Todo
+        ///     Credenciales de acceso
         ///     {
         ///        "userName": "admin@gmail.com",
         ///        "password": "admin"
@@ -84,7 +82,7 @@ namespace Vet.Controllers
             {
                 IsSuccess = result.IsSuccess,
                 Result = result.Result,
-                Message = result.IsSuccess  ? GeneralMessages.ItemInserted : result.Message//GeneralMessages.ItemNoInserted
+                Message = result.IsSuccess ? GeneralMessages.ItemInserted : result.Message //GeneralMessages.ItemNoInserted
             };
 
             if (result.IsSuccess)
@@ -95,6 +93,6 @@ namespace Vet.Controllers
             return response;
         }
         #endregion
-        
+
     }
 }

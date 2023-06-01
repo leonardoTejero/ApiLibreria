@@ -1,4 +1,4 @@
-﻿namespace MyVet.Domain.Dto
+﻿namespace MyLibrary.Domain.Dto
 {
     public class ResponseDto
     {

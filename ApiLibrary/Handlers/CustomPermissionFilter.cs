@@ -1,10 +1,10 @@
 ﻿using Common.Utils.Enums;
 using Common.Utils.Exceptions;
 using Common.Utils.Helpers;
-using Common.Utils.Resorces;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Filters;
-using MyVet.Domain.Services.Interface;
+using MyLibrary.Domain.Services.Interface;
 using System;
 using static Common.Utils.Constant.Const;
 

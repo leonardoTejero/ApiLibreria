@@ -1,18 +1,13 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
-using Common.Utils.Helpers;
-using Common.Utils.Resorces;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Editorial;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
-using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using static Common.Utils.Constant.Const;
 
 namespace ApiLibrary.Controllers
 {
@@ -81,7 +76,6 @@ namespace ApiLibrary.Controllers
             ResponseDto responseDto = new ResponseDto()
             {
                 IsSuccess = result,
-                Result = result,
                 Message = result ? GeneralMessages.ItemInserted : GeneralMessages.ItemNoInserted
             };
 

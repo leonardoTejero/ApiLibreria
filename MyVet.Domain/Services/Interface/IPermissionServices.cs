@@ -1,6 +1,6 @@
 ﻿using Common.Utils.Enums;
 
-namespace MyVet.Domain.Services.Interface
+namespace MyLibrary.Domain.Services.Interface
 {
     public interface IPermissionServices
     {

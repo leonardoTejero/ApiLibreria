@@ -1,12 +1,10 @@
 ﻿using Infraestructure.Core.UnitOfWork;
 using Infraestructure.Entity.Model.Library;
+using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.Author;
 using MyLibrary.Domain.Services.Interface;
-using MyVet.Domain.Dto;
-using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
 namespace MyLibrary.Domain.Services
@@ -39,6 +37,28 @@ namespace MyLibrary.Domain.Services
             }).ToList();
 
             return listAuthors;
+        }
+
+        public ResponseDto GetOneAuthor(int id)
+        {
+            ResponseDto response = new ResponseDto();
+
+            var author = _unitOfWork.AuthorRepository.FirstOrDefault(x => x.IdAuthor == id);
+            if (author == null)
+            {
+                response.Message = "El autor no fue encontrado";
+                return response;
+            }
+            AuthorDto authorDto = new AuthorDto()
+            {
+                Id = author.IdAuthor,
+                Name = author.Name,
+                LastName = author.LastName,
+            };
+
+            response.Result = authorDto;
+            response.IsSuccess = true;
+            return response;
         }
 
         public async Task<bool> InsertAuthorAsync(InsertAuthorDto author, int idUser)

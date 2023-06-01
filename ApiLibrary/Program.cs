@@ -1,13 +1,7 @@
 using Infraestructure.Core.Data;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace ApiLibrary
 {
@@ -17,8 +11,10 @@ namespace ApiLibrary
         {
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
-            // Crear data semilla
-            RunSeeding(host);
+
+            // Crear data semilla descomentar linea al ejecutar primera vez
+            //RunSeeding(host);
+
             host.Run();
         }
 

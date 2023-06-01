@@ -1,13 +1,10 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
-using Common.Utils.Resorces;
-using Infraestructure.Entity.Model;
 using Microsoft.AspNetCore.Authorization;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.User;
-using MyVet.Domain.Dto;
-using MyVet.Domain.Services.Interface;
+using MyLibrary.Domain.Services.Interface;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -27,7 +24,7 @@ namespace ApiLibreriaNeoris.Controllers
         public UserController(IUserServices userServices)
         {
             _userServices = userServices;
-        } 
+        }
         #endregion
 
 
@@ -70,7 +67,7 @@ namespace ApiLibreriaNeoris.Controllers
             IActionResult result;
 
             ResponseDto response = await _userServices.DeleteUser(idUser);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 result = Ok(response);
             else
                 result = BadRequest(response);
