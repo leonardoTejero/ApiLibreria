@@ -151,7 +151,7 @@ namespace Infraestructure.Core.Migrations
                         principalTable: "TypePermission",
                         principalColumn: "IdTypePermission",
                         onDelete: ReferentialAction.Cascade);
-                });
+                });  
 
             migrationBuilder.CreateTable(
                 name: "Author",

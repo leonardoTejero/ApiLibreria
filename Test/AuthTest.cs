@@ -134,7 +134,7 @@ namespace Test
 
             // Verificar que el token contenga los roles esperados
             var tokenHandler = new JwtSecurityTokenHandler();
-            //Lee el token JWT analiza y valida el token y lo deserializa en un objeto de tipo JwtSecurityToken
+            //Lee el token JWT analiza y valida y lo deserializa en un objeto de tipo JwtSecurityToken
             var tokenData = tokenHandler.ReadJwtToken(token);
             var roles = tokenData.Claims.Where(c => c.Type == TypeClaims.IdRol).Select(c => c.Value).ToList();
 
@@ -142,10 +142,24 @@ namespace Test
             //Assert.Contains("1", roles);
 
             Assert.Contains("2", roles);
-            // También puedes verificar otros roles o realizar diferentes comprobaciones
 
         }
 
+        //[Fact]
+        //public void ObtenerId() 
+        //{
+        //    int id = 2;
+        //    LoginDto user = new()
+        //    {
+        //        UserName = "estandar@gmail.com",
+        //        Password = "estandar"
+        //    };
+
+        // Casting para verificar que la respuesta sea del tipo esperado 
+        //    var result = (OkObjectResult)_controller.Login(user);
+        //    Assert.IsType<ResponseDto>(result.Value);
+
+        //}
 
     }
 }

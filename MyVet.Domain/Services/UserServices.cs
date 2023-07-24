@@ -161,6 +161,7 @@ namespace MyLibrary.Domain.Services
             return users;
         }
 
+        // TO DO validaciones si no encuentra el usuario
         public UserEntity GetUser(int idUser)
         {
             return _unitOfWork.UserRepository.FirstOrDefault(x => x.IdUser == idUser);

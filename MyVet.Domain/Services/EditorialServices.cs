@@ -26,6 +26,7 @@ namespace MyLibrary.Domain.Services
 
         public List<EditorialDto> GetAllEditorial()
         {
+            // Obtner las editoriales y los libros relacionados a dicha editorial
             var editorial = _unitOfWork.EditorialRepository.GetAll(x => x.BookEntities);  //x => x.BookEntities
 
             List<EditorialDto> list = editorial.Select(x => new EditorialDto

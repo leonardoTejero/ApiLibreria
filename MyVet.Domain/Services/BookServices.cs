@@ -42,7 +42,7 @@ namespace MyLibrary.Domain.Services
                 Editorial = x.BookEntity.EditorialEntity.Name,
                 IdAuthor = x.AuthorEntity.IdAuthor,
                 IdAuthorBook = x.Id,
-                Author = x.AuthorEntity.Name,
+                Author = x.AuthorEntity.Name +" "+ x.AuthorEntity.LastName,
 
             }).ToList();
 

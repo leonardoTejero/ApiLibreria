@@ -12,7 +12,7 @@ namespace MyLibrary.Domain.Dto.Book
         public string Name { get; set; }
 
         [Required(ErrorMessage = "La sinopsis es requerida")]
-        [MaxLength(100)]
+        [MaxLength(500)]
         public string Synopsis { get; set; }
 
         public int NumberPages { get; set; }
