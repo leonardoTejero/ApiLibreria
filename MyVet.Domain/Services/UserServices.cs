@@ -40,7 +40,7 @@ namespace MyLibrary.Domain.Services
         public TokenDto Login(LoginDto login)
         {
             UserEntity user = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == login.UserName
-                                                                        && x.Password == login.Password,
+                                                                        && x.Password == Utils.Encrypt(login.Password),
                                                                         r => r.RolUserEntities);
             if (user == null)
                 throw new BusinessException(GeneralMessages.BadCredentials);
@@ -106,7 +106,7 @@ namespace MyLibrary.Domain.Services
                             Email = data.UserName,
                             LastName = data.LastName,
                             Name = data.Name,
-                            Password = data.Password
+                            Password = Utils.Encrypt(data.Password)
                         }
                     };
 
