@@ -1,10 +1,12 @@
 ﻿using ApiLibrary.Handlers;
 using Common.Utils.Enums;
+using Common.Utils.Resources;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using MyLibrary.Domain.Dto;
 using MyLibrary.Domain.Dto.User;
 using MyLibrary.Domain.Services.Interface;
+using System;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -73,6 +75,37 @@ namespace ApiLibreriaNeoris.Controllers
                 result = BadRequest(response);
 
             return result;
+        }
+
+        /// <summary>
+        /// Actualizar usuario
+        /// </summary>
+        /// <param name="user"></param>
+        /// <returns></returns>
+        /// <response code="200">OK! </response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="500">Oops! Can't process your request now</response>
+        [HttpPut]
+        [Route("UpdateUser")]
+        //[CustomPermissionFilter(Enums.Permission.ActualizarUsuarios)]
+        public async Task<IActionResult> UpdateUser(UserDto user)
+        {
+
+            ResponseDto response = new ResponseDto();
+
+            bool result = await _userServices.UpdateUser(user);
+
+            if (result)
+            {
+                response.IsSuccess = true;
+                response.Message = GeneralMessages.ItemUpdated;
+                return Ok(response);
+            }
+            else
+            {
+                response.Message = GeneralMessages.ItemNoUpdated;
+                return BadRequest(response);
+            }
         }
 
 

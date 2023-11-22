@@ -9,6 +9,7 @@ namespace MyLibrary.Domain.Services.Interface
     {
         List<ConsultBookDto> GetAllBooks();
         ResponseDto GetOneBook(int idBook);
+        ResponseDto GetBooksByName(string name);
         Task<bool> InsertBookAsync(InsertBookDto book);
         Task<ResponseDto> DeleteBookAsync(int idBook);
         Task<bool> UpdateBookAsync(ConsultBookDto book);

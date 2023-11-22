@@ -54,7 +54,7 @@ namespace MyLibrary.Domain.Services
             ResponseDto response = new ResponseDto();
 
             var book = _unitOfWork.AuthorBookRepository.FirstOrDefault(x => x.IdBook == idBook, p => p.BookEntity,
-                                                                             p => p.BookEntity.EditorialEntity, p => p.AuthorEntity);
+                                                                       p => p.BookEntity.EditorialEntity, p => p.AuthorEntity);
 
             if (book == null)
             {
@@ -80,6 +80,47 @@ namespace MyLibrary.Domain.Services
 
             return response;
         }
+
+        public ResponseDto GetBooksByName(string name)
+        {
+
+            var response = new ResponseDto();
+
+
+            IEnumerable<AuthorBookEntity> books = _unitOfWork.AuthorBookRepository.FindAll(x => x.BookEntity.Name.Contains(name),
+                                                                  p => p.BookEntity.EditorialEntity, p => p.AuthorEntity);
+
+            if (books != null && books.Any())
+            {
+                List<ConsultBookDto> bookList = new List<ConsultBookDto>();
+
+                foreach (var book in books)
+                {
+                    bookList.Add(new ConsultBookDto
+                    {
+                        Id = book.BookEntity.IdBook,
+                        Name = book.BookEntity.Name,
+                        Synopsis = book.BookEntity.Synopsis,
+                        NumberPages = book.BookEntity.NumberPages,
+                        IdEditorial = book.BookEntity.IdEditorial,
+                        Editorial = book.BookEntity.EditorialEntity.Name,
+                        IdAuthor = book.AuthorEntity.IdAuthor,
+                        IdAuthorBook = book.Id,
+                        Author = book.AuthorEntity.Name,
+                    });
+                }
+
+                response.IsSuccess = true;
+                response.Result = bookList;
+
+                return response;
+            }
+
+            response.Message = "Libro no encontrado"; // GeneralMessages.ItemNotFound;
+            response.IsSuccess = false;
+            return response;
+        }
+
 
         //Insertar un libro y la tabla intermedia AutoresLibros
         public async Task<bool> InsertBookAsync(InsertBookDto book)

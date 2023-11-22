@@ -153,7 +153,7 @@ namespace MyLibrary.Domain.Services
                 Id = x.Id,
                 Name = x.UserEntity.Name,
                 LastName = x.UserEntity.LastName,
-                Email = x.UserEntity.Email,
+                UserName = x.UserEntity.Email,
                 IdRol = x.IdRol,
 
             }).ToList();
@@ -167,15 +167,18 @@ namespace MyLibrary.Domain.Services
             return _unitOfWork.UserRepository.FirstOrDefault(x => x.IdUser == idUser);
         }
 
-        public async Task<bool> UpdateUser(UserEntity user)
+        public async Task<bool> UpdateUser(UserDto userDto)
         {
-            UserEntity _user = GetUser(user.IdUser);
+            UserEntity user = _unitOfWork.UserRepository.FirstOrDefault(x => x.Email == userDto.UserName);
 
-            _user.Name = user.Name;
-            _user.LastName = user.LastName;
-            _unitOfWork.UserRepository.Update(_user);
+            user.Name = userDto.Name;
+            user.LastName = userDto.LastName;
+            user.Password = Utils.Encrypt(userDto.Password);
+
+            _unitOfWork.UserRepository.Update(user);
 
             return await _unitOfWork.Save() > 0;
+
         }
 
         public async Task<ResponseDto> DeleteUser(int idUser)
@@ -188,7 +191,7 @@ namespace MyLibrary.Domain.Services
             if (response.IsSuccess)
                 response.Message = "Usuario Eliminado";
             else
-                response.Message = "Hubo un error al eliminar el Usuario, por favor vuelva a intentalo";
+                response.Message = "Ocurrio un error al eliminar el Usuario, por favor vuelva a intentalo";
 
             return response;
         }

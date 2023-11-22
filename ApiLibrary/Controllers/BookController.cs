@@ -77,6 +77,23 @@ namespace ApiLibrary.Controllers
             return Ok(result);
         }
 
+
+        /// <summary>
+        /// Buscar un libro por el nombre
+        /// </summary>
+        /// <returns></returns>
+        /// <response code="200">OK! </response>
+        /// <response code="400">Business Exception</response>
+        /// <response code="500">Oops! Can't process your request now</response>
+        [HttpGet]
+        [Route("GetBooksByName")]
+        [CustomPermissionFilter(Enums.Permission.ConsultarLibros)]
+        public IActionResult GetBooksByName(string name)
+        {
+            ResponseDto result = _bookServices.GetBooksByName(name);
+            return Ok(result);
+        }
+
         /// <summary>
         /// Crear un nuevo libro
         /// </summary>
