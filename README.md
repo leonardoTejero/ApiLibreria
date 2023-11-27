@@ -1,4 +1,4 @@
-# ApiLibreriaNeoris
+# ApiLibreri
 -Api de Libreria, Crud de autores, editorial, libros, visualizacion de usuarios.
 
 -Autenticacion por token Jwt.
