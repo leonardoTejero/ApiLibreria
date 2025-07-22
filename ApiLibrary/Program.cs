@@ -12,12 +12,18 @@ namespace ApiLibrary
             //CreateHostBuilder(args).Build().Run();
             var host = CreateHostBuilder(args).Build();
 
-            // Crear data semilla descomentar linea al ejecutar primera vez
+            // Crear data semilla comentar linea al ejecutar primera vez
             //RunSeeding(host);
 
             host.Run();
         }
 
+        /// <summary>
+        /// Ejecuta el proceso de siembra de datos en la base de datos.
+        /// Utiliza un scope para obtener el servicio <see cref="SeedDb"/> y ejecutar la inicialización de datos.
+        /// Este método debe ejecutarse solo la primera vez que se inicia la aplicación para poblar la base de datos con datos iniciales.
+        /// </summary>
+        /// <param name="host">Instancia del host de la aplicación que provee los servicios necesarios.</param>
         private static void RunSeeding(IHost host)
         {
             var scopeFactory = host.Services.GetService<IServiceScopeFactory>();
