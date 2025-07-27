@@ -21,30 +21,27 @@ namespace Test
         private readonly AuthenticationController _controller;
         private readonly IUserServices _userServices;
         private readonly UnitOfWork _unitOfWork;
-        private readonly IConfiguration _configuration;
         private readonly DataContext _context;
 
         #endregion
 
         #region Builder
+
         public AuthTest()
         {
             //Creacion de todos los objetos necesarios que se inyectan en cada servicio
+            //Cargar la configuracion de appsettings.test.json
+            var _configuration = new ConfigurationBuilder().SetBasePath(Directory.GetCurrentDirectory()) 
+                                                           .AddJsonFile("appsettings.test.json") 
+                                                           .Build();
 
             var dbContextOptions = new DbContextOptionsBuilder<DataContext>()
-                .UseSqlServer("Server=LEOT\\SQLEXPRESS; Database=BdLibreriaNeoris; Trusted_Connection=True; MultipleActiveResultSets=true; TrustServerCertificate=True;")
+                .UseSqlServer(_configuration.GetConnectionString("ConnectionStringSQLServer").ToString())
                 .Options;
 
 
             _context = new DataContext(dbContextOptions);
             _unitOfWork = new UnitOfWork(_context);
-
-            //_configuration = new ConfigurationBuilder().Build();
-
-            var _configuration = new ConfigurationBuilder()
-                .SetBasePath("C:\\Users\\leona\\source\\repos\\ApiLibreriaNeoris\\Test") // Ruta base Directory.GetCurrentDirectory()
-                .AddJsonFile("appsettings.test.json") // Nombre del archivo de configuración de pruebas
-                .Build();
 
             _userServices = new UserServices(_unitOfWork, _configuration);
             _controller = new AuthenticationController(_userServices);
@@ -52,7 +49,7 @@ namespace Test
         #endregion
 
         [Fact]
-        public void Post_AuthenticationSucceeded()
+        public void Login_Credenciales_Validas()
         {
             LoginDto user = new()
             {
@@ -62,12 +59,16 @@ namespace Test
 
             var result = _controller.Login(user);
 
+            // Convertir a OkObjectResult
+            var okResult = result as OkObjectResult;
+
             Assert.IsType<OkObjectResult>(result);
-            // Validar contenido de la respuesta como token etc..
+            Assert.NotNull(okResult);
+            Assert.Equal(200, okResult.StatusCode);
         }
 
         [Fact]
-        public void Post_AuthenticationFailed()
+        public void Login_Credenciales_Invalidas()
         {
             LoginDto user = new()
             {
@@ -106,18 +107,17 @@ namespace Test
             var expirationDate = tokenData.ValidTo;
 
             Assert.True(DateTime.UtcNow < expirationDate);
-            // También puedes verificar otros detalles del token, como los roles o los claims
+            
         }
 
         [Fact]
-        public void Post_RoleVerification()
+        public void Login_UsuarioConRolEstandar()
         {
-            // Configura el contexto de pruebas con un usuario que tenga roles específicos
-
+            //usuario con rol estandar
             LoginDto user = new()
             {
-                UserName = "estandar@gmail.com",
-                Password = "estandar"
+                UserName = "Oliver@gmail.com",
+                Password = "oliver"
             };
 
             var response = _controller.Login(user);
@@ -139,27 +139,25 @@ namespace Test
             var roles = tokenData.Claims.Where(c => c.Type == TypeClaims.IdRol).Select(c => c.Value).ToList();
 
             // que contenga rol admin "1" standar "2"
-            //Assert.Contains("1", roles);
-
             Assert.Contains("2", roles);
-
         }
 
-        //[Fact]
-        //public void ObtenerId() 
-        //{
-        //    int id = 2;
-        //    LoginDto user = new()
-        //    {
-        //        UserName = "estandar@gmail.com",
-        //        Password = "estandar"
-        //    };
+        [Fact]
+        public async void Registro_UsuarioNuevo_Exitoso()
+        {
+            UserDto newUser = new()
+            {
+                Name = "Pepito",
+                LastName = "Perez",
+                Password = "123456",
+                ConfirmPassword = "123456",
+                UserName = "PepitoPerez@test.com"
+            };
 
-        // Casting para verificar que la respuesta sea del tipo esperado 
-        //    var result = (OkObjectResult)_controller.Login(user);
-        //    Assert.IsType<ResponseDto>(result.Value);
+            var response = await _controller.Register(newUser);
+            Assert.IsType<OkObjectResult>(response);
 
-        //}
+        }
 
     }
 }
